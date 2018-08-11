@@ -40,6 +40,7 @@ public class MainContentTabbedActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
     private TabLayout tabLayout;
+    private Menu originalMenu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,8 +77,18 @@ public class MainContentTabbedActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
+                if(position == 2) {
+                    originalMenu.clear();
+                    getMenuInflater().inflate(R.menu.status_menu, originalMenu);
+                } else if(position == 3) {
+                    originalMenu.clear();
+                    getMenuInflater().inflate(R.menu.calls_menu, originalMenu);
+                } else {
+                    originalMenu.clear();
+                    getMenuInflater().inflate(R.menu.main_menu, originalMenu);
+                }
+
                 tabLayout.getTabAt(position).select();
-                Toast.makeText(MainContentTabbedActivity.this, "CHANGED " + position, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -127,13 +138,11 @@ public class MainContentTabbedActivity extends AppCompatActivity {
 
     }
 
-    public void addTabPage(String title) {
-
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        originalMenu = menu;
         return true;
     }
 
@@ -143,6 +152,7 @@ public class MainContentTabbedActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
