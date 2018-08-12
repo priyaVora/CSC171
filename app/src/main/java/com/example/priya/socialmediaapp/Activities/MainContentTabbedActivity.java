@@ -1,6 +1,7 @@
 package com.example.priya.socialmediaapp.Activities;
 
 import android.app.ActionBar;
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -54,7 +55,8 @@ public class MainContentTabbedActivity extends AppCompatActivity {
 
 
         tabLayout = findViewById(R.id.tabs);
-        tabLayout.addTab(tabLayout.newTab().setText("CAMERA"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.camera));
+        tabLayout.getTabAt(0).setText("");
         tabLayout.addTab(tabLayout.newTab().setText("CHATS"));
         tabLayout.addTab(tabLayout.newTab().setText("STATUS"));
         tabLayout.addTab(tabLayout.newTab().setText("CALLS"));
@@ -71,7 +73,6 @@ public class MainContentTabbedActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
 
             }
 
@@ -102,14 +103,16 @@ public class MainContentTabbedActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 Toast.makeText(MainContentTabbedActivity.this, tab.getText(), Toast.LENGTH_LONG).show();
-                if(tab.getText().equals("CAMERA")) {
-                    mViewPager.setCurrentItem(0);
-                } else if(tab.getText().equals("CHATS")) {
+
+
+                if(tab.getText().equals("CHATS")) {
                     mViewPager.setCurrentItem(1);
                 }  else if(tab.getText().equals("STATUS")) {
                     mViewPager.setCurrentItem(2);
                 } else if(tab.getText().equals("CALLS")) {
                     mViewPager.setCurrentItem(3);
+                } else if(tab.getIcon().equals(R.drawable.camera)) {
+                    mViewPager.setCurrentItem(0);
                 }
             }
 

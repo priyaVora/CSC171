@@ -1,15 +1,25 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.priya.socialmediaapp.Activities.MainContentTabbedActivity$PlaceholderFragment">
+    android:orientation="vertical"
+    tools:context="com.example.priya.socialmediaapp.Activities.MainContentTabbedActivity">
 
     <TextView
         android:id="@+id/section_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tab 3 Status"/>
+        android:text="Tab 3 Status"
+        android:layout_marginBottom="320dp"/>
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_gravity="right|end"
+        android:background="@color/colorRandom"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/pen" />
+
+</LinearLayout>
