@@ -106,45 +106,51 @@ public class CreateAccountActivity extends AppCompatActivity {
                 mCreateAccountDialog.setMessage("Creating Account...");
                 mCreateAccountDialog.show();
                 Log.d("AuthMessage","Before Creating account...");
-                mAuth.createUserWithEmailAndPassword(em, pwd).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        if(authResult != null) {
 
-                            Log.d("profileImageMessage", "Auth Result is not null");
-                            StorageReference imagePath = mFirebaseStorage.child("MBlog_Profile_Pics")
-                                    .child(resultUri.getLastPathSegment());
-                            Log.d("profileImageMessage", "Image Path storage");
-                            imagePath.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                if(mAuth != null) {
+                    mAuth.createUserWithEmailAndPassword(em, pwd).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
+                            if(authResult != null) {
 
-                                    String userid = mAuth.getCurrentUser().getUid();
+                                Log.d("profileImageMessage", "Auth Result is not null");
+                                StorageReference imagePath = mFirebaseStorage.child("MBlog_Profile_Pics")
+                                        .child(resultUri.getLastPathSegment());
+                                Log.d("profileImageMessage", "Image Path storage");
+                                imagePath.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                                    DatabaseReference currentUserDb = mDatabaseReferences.child(userid);
-                                    currentUserDb.child("image").setValue(resultUri.toString());
-                                    Log.d("profileImageMessage", "Image is set.");
-                                    currentUserDb.child("firstname").setValue(fName);
-                                    Log.d("profileImageMessage", "First name is set.");
-                                    currentUserDb.child("lastname").setValue(lName);
-                                    Log.d("profileImageMessage", "Last name is set.");
-                                    mCreateAccountDialog.dismiss();
+                                        String userid = mAuth.getCurrentUser().getUid();
+
+                                        DatabaseReference currentUserDb = mDatabaseReferences.child(userid);
+                                        currentUserDb.child("image").setValue(resultUri.toString());
+                                        Log.d("profileImageMessage", "Image is set.");
+                                        currentUserDb.child("firstname").setValue(fName);
+                                        Log.d("profileImageMessage", "First name is set.");
+                                        currentUserDb.child("lastname").setValue(lName);
+                                        Log.d("profileImageMessage", "Last name is set.");
+                                        mCreateAccountDialog.dismiss();
 
 
 
-                                  //  Send users to postlist
-                                    Intent intent = new Intent(CreateAccountActivity.this, MainContentTabbedActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //we usually use finish()
-
-                                    startActivity(intent);
-                                }
-                            });
-                        } else {
-                            Toast.makeText(CreateAccountActivity.this, "The mAUth is null", Toast.LENGTH_LONG).show();
-                            Log.d("profileImageMessage", "mAuth is null.");
+                                        //Send users to postlist
+//                                        Intent intent = new Intent(CreateAccountActivity.this, PostListActivity.class);
+//                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //we usually use finish()
+//
+//                                        startActivity(intent);
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(CreateAccountActivity.this, "The mAUth is null", Toast.LENGTH_LONG).show();
+                                Log.d("profileImageMessage", "mAuth is null.");
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                        Log.d("AuthMessage", "Auth is null: Firebase.Auth not found");
+                }
+
 
 
 
