@@ -23,6 +23,7 @@ import com.example.priya.socialmediaapp.Model.tab_contacts;
 import com.example.priya.socialmediaapp.Model.tab_chat;
 import com.example.priya.socialmediaapp.Model.tab_status;
 import com.example.priya.socialmediaapp.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainContentTabbedActivity extends AppCompatActivity {
 
@@ -39,6 +40,8 @@ public class MainContentTabbedActivity extends AppCompatActivity {
     /**
      * The {@link ViewPager} that will host the section contents.
      */
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
     private ViewPager mViewPager;
     private TabLayout tabLayout;
     private Menu originalMenu;
@@ -50,7 +53,7 @@ public class MainContentTabbedActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        mAuth = FirebaseAuth.getInstance();
 
 
 
@@ -156,10 +159,12 @@ public class MainContentTabbedActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+                if(item.getItemId() == R.id.action_signout) {
+                mAuth.signOut();
         }
 
         return super.onOptionsItemSelected(item);

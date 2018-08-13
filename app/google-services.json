@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "953033396180",
+    "firebase_url": "https://csc171-mobile-app.firebaseio.com",
+    "project_id": "csc171-mobile-app",
+    "storage_bucket": "csc171-mobile-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:953033396180:android:eeab9451ace4f9ec",
+        "android_client_info": {
+          "package_name": "com.example.priya.socialmediaapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "953033396180-3jt2lrkbqioq5kq0iu5sj637mbh28km9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.priya.socialmediaapp",
+            "certificate_hash": "c0ea20d7f76a2aa3b9686796ea96f88f966593a3"
+          }
+        },
+        {
+          "client_id": "953033396180-0e8loam0ifq5k0hlsmobqbvur2ci12h7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvcZm2p7YXDchKuN6Ml1IhpZVOa7bqUJM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "953033396180-0e8loam0ifq5k0hlsmobqbvur2ci12h7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

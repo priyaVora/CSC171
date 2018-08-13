@@ -84,4 +84,10 @@
     <string name="profileInfo">Profile Info</string>
     <string name="name_messages">Please provide your name and an optional profile photo</string>
     <string name="next">Next</string>
+    <string name="createAccount">Create Account</string>
+    <string name="firstName">First name</string>
+    <string name="lastName">Last name</string>
+    <string name="emailAddress">Email Address</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
 </resources>
