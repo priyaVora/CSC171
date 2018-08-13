@@ -34,9 +34,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         emailAddressView = findViewById(R.id.emailAddressLoginScreen);
-        passwordView = findViewById(R.id.passwordViewLogin);
         loginButton = findViewById(R.id.loginButtonLoginScreen);
-        passwordView = findViewById(R.id.passwordViewLogin);
+        passwordView = findViewById(R.id.passwordLoginScreen);
         createButton = findViewById(R.id.createButtonLoginScreen);
         mAuth = FirebaseAuth.getInstance();
 
@@ -58,13 +57,18 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!TextUtils.isEmpty(emailAddressView.getText().toString())
-                        && !TextUtils.isEmpty(passwordView.getText().toString())) {
-                    String email = emailAddressView.getText().toString();
-                    String pwd = passwordView.getText().toString();
-                    login(email, pwd);
-                } else {
+                if(emailAddressView != null && passwordView !=null) {
+                    Log.d("AuthMessage", "NOTTTTTTTTTNULL");
+                    if (!TextUtils.isEmpty(emailAddressView.getText().toString())
+                            && !TextUtils.isEmpty(passwordView.getText().toString())) {
+                        String email = emailAddressView.getText().toString();
+                        String pwd = passwordView.getText().toString();
+                        login(email, pwd);
+                    } else {
 
+                    }
+                } else {
+                    Log.d("AuthMessage", "NULLLLLLLLLLLLLLLlll");
                 }
             }
         });
@@ -87,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()) {
                                     Toast.makeText(LoginActivity.this, "Signed In", Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(LoginActivity.this, NewProfileInfoActivity.class ));
+                                    startActivity(new Intent(LoginActivity.this, MainContentTabbedActivity.class ));
                                     finish();
                                 } else {
 
