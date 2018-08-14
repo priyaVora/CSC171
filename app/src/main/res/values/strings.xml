@@ -93,4 +93,6 @@
     <string name="my_status">My status</string>
     <string name="statusTime">0 minutes ago</string>
     <string name="recent_updates">Recent Updates</string>
+    <string name="title_activity_status__edit_">Status_Edit_Activity</string>
+    <string name="status_disappear_message">Your status updates will disappear after 24 hours.</string>
 </resources>
