@@ -6,4 +6,5 @@
     <color name="colorRandom">#c80734</color>
     <color name="greyColor">#dddada</color>
     <color name="colorAccent1">#0DA536</color>
+    <color name="control_background">#cc4285f4</color>
 </resources>

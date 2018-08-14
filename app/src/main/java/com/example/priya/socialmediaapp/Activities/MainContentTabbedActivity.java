@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 
+import com.example.priya.socialmediaapp.Activities.Camera.CameraActivity;
 import com.example.priya.socialmediaapp.Model.tab_calls;
 import com.example.priya.socialmediaapp.Model.tab_contacts;
 import com.example.priya.socialmediaapp.Model.tab_chat;
@@ -133,7 +134,9 @@ public class MainContentTabbedActivity extends AppCompatActivity {
                 } else if(tab.getText().equals("CALLS")) {
                     mViewPager.setCurrentItem(3);
                 } else if(tab.getText().equals("")) {
-                    mViewPager.setCurrentItem(0);
+                   // mViewPager.setCurrentItem(0);
+                    startActivity(new Intent(MainContentTabbedActivity.this, CameraActivity.class));
+                    finish();
                 }
             }
 
@@ -152,6 +155,7 @@ public class MainContentTabbedActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
 
             }
         });

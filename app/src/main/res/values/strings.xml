@@ -95,4 +95,9 @@
     <string name="recent_updates">Recent Updates</string>
     <string name="title_activity_status__edit_">Status_Edit_Activity</string>
     <string name="status_disappear_message">Your status updates will disappear after 24 hours.</string>
+    <string name="picture">Picture</string>
+    <string name="description_info">Info</string>
+    <string name="request_permission">This sample needs camera permission.</string>
+    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
+    <string name="capture">Capture</string>
 </resources>
