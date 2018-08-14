@@ -3,6 +3,7 @@ package com.example.priya.socialmediaapp.Activities;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -61,6 +62,7 @@ public class MainContentTabbedActivity extends AppCompatActivity {
 
 
 
+
         tabLayout = findViewById(R.id.tabs);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.camera));
         tabLayout.getTabAt(0).setText("");
@@ -86,14 +88,28 @@ public class MainContentTabbedActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 if(position == 2) {
-                    originalMenu.clear();
-                    getMenuInflater().inflate(R.menu.status_menu, originalMenu);
+                    if(originalMenu != null) {
+                            originalMenu.clear();
+                        getMenuInflater().inflate(R.menu.status_menu, originalMenu);
+                    }
+
                 } else if(position == 3) {
-                    originalMenu.clear();
-                    getMenuInflater().inflate(R.menu.calls_menu, originalMenu);
+                    if(originalMenu != null) {
+                            originalMenu.clear();
+
+                        getMenuInflater().inflate(R.menu.calls_menu, originalMenu);
+                    }
+                } else if(position == 1) {
+                    if(originalMenu != null) {
+                            originalMenu.clear();
+
+                        getMenuInflater().inflate(R.menu.main_menu, originalMenu);
+                    }
                 } else {
-                    originalMenu.clear();
-                    getMenuInflater().inflate(R.menu.main_menu, originalMenu);
+                    if(originalMenu != null) {
+                            originalMenu.clear();
+                        getMenuInflater().inflate(R.menu.main_menu, originalMenu);
+                    }
                 }
 
                 tabLayout.getTabAt(position).select();
@@ -105,6 +121,7 @@ public class MainContentTabbedActivity extends AppCompatActivity {
             }
         });
 
+        mViewPager.setCurrentItem(1);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -115,7 +132,7 @@ public class MainContentTabbedActivity extends AppCompatActivity {
                     mViewPager.setCurrentItem(2);
                 } else if(tab.getText().equals("CALLS")) {
                     mViewPager.setCurrentItem(3);
-                } else if(tab.getIcon().equals(R.drawable.camera)) {
+                } else if(tab.getText().equals("")) {
                     mViewPager.setCurrentItem(0);
                 }
             }
@@ -135,15 +152,12 @@ public class MainContentTabbedActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
             }
         });
-
-
-
-
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
