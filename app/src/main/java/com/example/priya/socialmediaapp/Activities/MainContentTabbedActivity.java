@@ -18,7 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+
 
 import com.example.priya.socialmediaapp.Model.tab_calls;
 import com.example.priya.socialmediaapp.Model.tab_contacts;
@@ -26,6 +26,8 @@ import com.example.priya.socialmediaapp.Model.tab_chat;
 import com.example.priya.socialmediaapp.Model.tab_status;
 import com.example.priya.socialmediaapp.R;
 import com.google.firebase.auth.FirebaseAuth;
+
+import static java.security.AccessController.getContext;
 
 public class MainContentTabbedActivity extends AppCompatActivity {
 
@@ -107,9 +109,6 @@ public class MainContentTabbedActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Toast.makeText(MainContentTabbedActivity.this, tab.getText(), Toast.LENGTH_LONG).show();
-
-
                 if(tab.getText().equals("CHATS")) {
                     mViewPager.setCurrentItem(1);
                 }  else if(tab.getText().equals("STATUS")) {

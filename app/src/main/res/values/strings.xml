@@ -90,4 +90,7 @@
     <string name="emailAddress">Email Address</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string name="my_status">My status</string>
+    <string name="statusTime">0 minutes ago</string>
+    <string name="recent_updates">Recent Updates</string>
 </resources>

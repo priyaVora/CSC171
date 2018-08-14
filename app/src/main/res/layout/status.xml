@@ -1,25 +1,92 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Linear"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.priya.socialmediaapp.Activities.MainContentTabbedActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="2dp"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/status_profile_image_button"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/unknown_profile"
+            android:layout_width="65dp"
+            android:layout_height="70dp" />
 
-    <TextView
-        android:id="@+id/section_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tab 3 Status"
-        android:layout_marginBottom="320dp"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="18dp"
+            >
+            <TextView
+                android:id="@+id/statusMyStatus"
+                android:text="@string/my_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="17sp"
+                />
+
+            <TextView
+                android:text="@string/statusTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                />
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/status_menu_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|end|center"
+            android:layout_marginLeft="110dp"
+            android:foregroundGravity="right"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:background="@android:color/transparent"
+            android:text="..."/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="275dp">
+
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:background="@color/greyColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/recent_updates"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:layout_gravity="right|end"
-        android:background="@color/colorRandom"
         android:layout_margin="@dimen/fab_margin"
+        android:layout_marginTop="100dp"
+        android:background="@color/colorRandom"
         app:srcCompat="@drawable/pen" />
 
 </LinearLayout>
