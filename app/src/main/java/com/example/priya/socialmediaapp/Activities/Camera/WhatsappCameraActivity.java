@@ -1,4 +1,4 @@
-package com.example.priya.socialmediaapp.Activities;
+package com.example.priya.socialmediaapp.Activities.Camera;
 
 import android.Manifest;
 import android.animation.AnimatorSet;

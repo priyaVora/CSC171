@@ -58,10 +58,10 @@
             android:name=".Activities.Status_Edit_Activity"
             android:label="@string/title_activity_status__edit_"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activities.Camera.CameraActivity" />
-        <activity android:name=".Activities.MainCameraActivity" />
-        <activity android:name=".Activities.WhatsappCameraActivity" />
-        <activity android:name=".Activities.PhotoVideoRedirectActivity"></activity>
+        <activity android:name=".Activities.Camera.MainCameraActivity" />
+        <activity android:name=".Activities.Camera.WhatsappCameraActivity" />
+        <activity android:name=".Activities.Camera.PhotoVideoRedirectActivity" />
+        <activity android:name=".ChatApplication.ChatActivity"></activity>
     </application>
 
 </manifest>

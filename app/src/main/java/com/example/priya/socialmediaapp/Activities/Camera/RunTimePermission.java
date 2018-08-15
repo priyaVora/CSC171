@@ -1,4 +1,4 @@
-package com.example.priya.socialmediaapp.Activities;
+package com.example.priya.socialmediaapp.Activities.Camera;
 
 import android.app.Activity;
 import android.app.AlertDialog;
