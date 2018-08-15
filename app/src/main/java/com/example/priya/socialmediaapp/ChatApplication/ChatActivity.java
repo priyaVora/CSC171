@@ -1,6 +1,8 @@
 package com.example.priya.socialmediaapp.ChatApplication;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,10 +12,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.priya.socialmediaapp.ChatApplication.Chat_model.Message;
+import com.example.priya.socialmediaapp.ChatApplication.Dialog_Fragment.AddContactDialog;
 import com.example.priya.socialmediaapp.R;
 
 import java.util.ArrayList;
@@ -22,6 +26,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private EditText message;
     private Button sendMessageButton;
+    private ImageButton addContactsButton;
     private static final String USER_ID_KEY = "userId";
     private String currentUserId;
     private ListView listView;
@@ -40,6 +45,27 @@ public class ChatActivity extends AppCompatActivity {
         this.getSupportActionBar().hide();
         getCurrentUser();
         handler.postDelayed(runnable, 100);
+        sendMessageButton = findViewById(R.id.buttonSend);
+        addContactsButton = findViewById(R.id.addContactsButton);
+
+        addContactsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddContactDialog cd = new AddContactDialog(ChatActivity.this);
+                cd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+                cd.setCancelable(false);
+                cd.show();
+                Toast.makeText(ChatActivity.this, "ADD CONTACT VIEW", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        sendMessageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
 
     Runnable runnable = new Runnable() {
@@ -49,6 +75,9 @@ public class ChatActivity extends AppCompatActivity {
             handler.postDelayed(this, 100);
         }
     };
+
+    private void refreshMessage() {
+    }
 
     private void getCurrentUser() {
         currentUserId = "1";// getuserFromFirebase(currentUserId)// get object id of the current user
@@ -84,15 +113,6 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private void refreshMessage() {
-        receiveMessage();
-    }
-
-    private void receiveMessage() {
-        //Parse query set max queries to show.
-        //setLimitto MaxChatMsg toShow
     }
 
     @Override
