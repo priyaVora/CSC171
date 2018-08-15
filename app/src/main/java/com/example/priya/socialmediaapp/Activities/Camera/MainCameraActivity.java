@@ -23,7 +23,9 @@ public class MainCameraActivity extends AppCompatActivity {
         runTimePermission.requestPermission(new String[]{Manifest.permission.CAMERA,
                 Manifest.permission.RECORD_AUDIO,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.WRITE_CONTACTS
         }, new RunTimePermission.RunTimePermissionListener() {
 
             @Override
