@@ -1,12 +1,17 @@
 package com.example.priya.socialmediaapp.ChatApplication;
 
+import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.priya.socialmediaapp.ChatApplication.Chat_model.Message;
 import com.example.priya.socialmediaapp.R;
@@ -21,7 +26,7 @@ public class ChatActivity extends AppCompatActivity {
     private String currentUserId;
     private ListView listView;
     private ArrayList<Message> mMessages;
-  //  private ChatAdapter mAdapter;
+    private ChatAdapter mAdapter;
     private Handler handler = new Handler();
 
     private static final int MAX_CHAT_MSG_TO_SHOW = 70;
@@ -32,7 +37,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
+        this.getSupportActionBar().hide();
         getCurrentUser();
         handler.postDelayed(runnable, 100);
     }
@@ -46,7 +51,7 @@ public class ChatActivity extends AppCompatActivity {
     };
 
     private void getCurrentUser() {
-       // currentUserId = ParseUser.getCurrentUser().getObjectId();
+        currentUserId = "1";// getuserFromFirebase(currentUserId)// get object id of the current user
         messagePosting();
     }
 
@@ -55,17 +60,30 @@ public class ChatActivity extends AppCompatActivity {
         sendMessageButton = findViewById(R.id.buttonSend);
         listView = findViewById(R.id.listview_chat);
         mMessages = new ArrayList<>();
-        //mAdapter = new ChatAdapter(ChatActivity.this, currentUserId, mMessages);
-        //listView.setAdapter(mAdapter);
 
-        //sendMessageButton.setOnClickListener(new View);
-        //---> if(!message.getText().toString().equals()) {
-        //  Set message user id, set message body
-            //receiveMessage(); --> method
-        //}  else {
+        Message new_message = new Message();
+        new_message.setTimestamp(String.valueOf(System.currentTimeMillis()));
+        new_message.setUserid("2");
+        new_message.setMessage_body("Hey Priya!");
 
-        // "Empty message"
-        //}
+        mMessages.add(new_message);
+        mAdapter = new ChatAdapter(ChatActivity.this, currentUserId, mMessages);
+        listView.setAdapter(mAdapter);
+
+        sendMessageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!message.getText().toString().equals("")) {
+                    Message msg = new Message();
+                    msg.setUserid(currentUserId);
+                    msg.setMessage_body("This is the messsage body");
+                    msg.setTimestamp(String.valueOf(java.lang.System.currentTimeMillis()));
+                    //save message
+                } else {
+                    Toast.makeText(getApplicationContext(), "Empty Message!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     private void refreshMessage() {

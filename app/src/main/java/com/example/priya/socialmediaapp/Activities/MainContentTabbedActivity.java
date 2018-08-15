@@ -17,6 +17,7 @@ import android.view.View;
 
 
 import com.example.priya.socialmediaapp.Activities.Camera.MainCameraActivity;
+import com.example.priya.socialmediaapp.ChatApplication.ChatActivity;
 import com.example.priya.socialmediaapp.Model.tab_calls;
 import com.example.priya.socialmediaapp.Model.tab_contacts;
 import com.example.priya.socialmediaapp.Model.tab_chat;
@@ -48,7 +49,6 @@ public class MainContentTabbedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_content_tabbed);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -148,8 +148,8 @@ public class MainContentTabbedActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
+            startActivity(new Intent(MainContentTabbedActivity.this, ChatActivity.class));
+            finish();
             }
         });
     }

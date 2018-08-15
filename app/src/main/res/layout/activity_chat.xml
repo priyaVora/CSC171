@@ -5,12 +5,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.priya.socialmediaapp.ChatApplication.ChatActivity">
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:id="@+id/appBarLayout">
 
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbarChat"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/greyColor"
+                android:orientation="vertical"
+                android:gravity="left">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_margin="3dp"
+                    android:background="@android:color/white"
+                    android:gravity="left|center">
+
+                    <EditText
+                        android:id="@+id/editMobileNo"
+                        android:layout_width="300dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="0dp"
+                        android:background="@drawable/login_edittext"
+                        android:ems="10"
+                        android:paddingLeft="2dp"
+                        android:hint="Search"
+                        android:drawableLeft="@android:drawable/ic_menu_search"
+                        android:gravity="left" >
+                    </EditText>
+
+                    <ImageButton
+                        android:layout_margin="5dp"
+                        android:id="@+id/addContactsButton"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/baseline_people_outline_black_18dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
     <ListView
         android:id="@+id/listview_chat"
         android:transcriptMode="alwaysScroll"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/relativeLayout"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
@@ -20,22 +74,27 @@
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_alignParentBottom="true"
-        android:background="#ffffff"
+        android:background="#cec0c0"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:paddingLeft="0dp"
-        android:paddingBottom="10dp">
+        android:layout_marginBottom="10dp">
 
         <EditText
             android:id="@+id/etMessage"
             android:layout_toLeftOf="@+id/buttonSend"
             android:layout_alignBottom="@+id/buttonSend"
             android:gravity="top"
+            android:padding="2dp"
+            android:layout_marginLeft="2dp"
             android:hint="Enter Message"
+            android:background="@drawable/edit_text_bg"
             android:imeOptions="actionSend"
+            android:inputType="textMultiLine"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_marginTop="2dp"
+            android:layout_height="fill_parent" />
 
         <Button
             android:id="@+id/buttonSend"
@@ -45,7 +104,17 @@
             android:paddingRight="10dp"
             android:layout_alignParentRight="true"
             android:text="Send"
-            android:textColor="@android:color/white"
+            android:lines="1"
+            android:shadowColor="@color/colorPrimary"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="1.6"
+            android:textAllCaps="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/colorPrimary"
+            android:background="@android:color/transparent"
+            android:textStyle="bold"
+            android:textAlignment="center"
             android:textSize="18sp"/>
     </RelativeLayout>
 
