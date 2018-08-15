@@ -135,7 +135,7 @@ public class MainContentTabbedActivity extends AppCompatActivity {
                     mViewPager.setCurrentItem(3);
                 } else if(tab.getText().equals("")) {
                    // mViewPager.setCurrentItem(0);
-                    startActivity(new Intent(MainContentTabbedActivity.this, CameraActivity.class));
+                    startActivity(new Intent(MainContentTabbedActivity.this, MainCameraActivity.class));
                     finish();
                 }
             }

@@ -139,6 +139,8 @@ public class Camera2BasicFragment extends Fragment
         }
 
     };
+
+
     private HandlerThread mBackgroundThread;
     private Handler mBackgroundHandler;
     private ImageReader mImageReader;
@@ -243,7 +245,7 @@ public class Camera2BasicFragment extends Fragment
         // Collect the supported resolutions that are smaller than the preview Surface
         List<Size> notBigEnough = new ArrayList<>();
         int w = aspectRatio.getWidth();
-        int h = aspectRatio.getHeight();
+        int h = aspectRatio.getHeight() + 150;
         for (Size option : choices) {
             if (option.getWidth() <= maxWidth && option.getHeight() <= maxHeight &&
                     option.getHeight() == option.getWidth() * h / w) {
@@ -286,7 +288,7 @@ public class Camera2BasicFragment extends Fragment
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         Log.d("AuthMessage", "Returned View: " + view);
-        view.findViewById(R.id.picture).setOnClickListener(this);
+     //   view.findViewById(R.id.picture).setOnClickListener(this);
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.texture);
     }
 
@@ -689,10 +691,10 @@ public class Camera2BasicFragment extends Fragment
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.picture: {
-                takePicture();
-                break;
-            }
+//            case R.id.picture: {
+//                takePicture();
+//                break;
+//            }
             case R.id.info: {
                 Activity activity = getActivity();
                 if (null != activity) {

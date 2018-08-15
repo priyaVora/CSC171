@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">WhatsApp</string>
+    <string name="file_limit_size_upload_format">Files must be less than %sMB</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_main">MainActivity</string>
 
@@ -100,4 +101,5 @@
     <string name="request_permission">This sample needs camera permission.</string>
     <string name="camera_error">This device doesn\'t support Camera2 API.</string>
     <string name="capture">Capture</string>
+    <string name="file_limit_size_upload_format1">File</string>
 </resources>
