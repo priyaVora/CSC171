@@ -81,9 +81,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
 
-    /**
-     * Show the contacts in the ListView.
-     */
+
     private void showContacts() {
         // Check the SDK version and whether the permission is already granted or not.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
@@ -141,6 +139,7 @@ public class ChatActivity extends AppCompatActivity {
     };
 
     private void refreshMessage() {
+
     }
 
     private void getCurrentUser() {

@@ -83,15 +83,14 @@ public class WhatsappCameraActivity extends AppCompatActivity implements Surface
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_whatsapp_camera);
-
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        this.getSupportActionBar().hide();
 
         runTimePermission = new RunTimePermission(this);
         runTimePermission.requestPermission(new String[]{Manifest.permission.CAMERA,
                 Manifest.permission.RECORD_AUDIO,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
         }, new RunTimePermission.RunTimePermissionListener() {
 
             @Override

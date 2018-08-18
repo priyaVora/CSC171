@@ -2,9 +2,13 @@ package com.example.priya.socialmediaapp.ChatApplication.Dialog_Fragment;
 
 import android.app.Dialog;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
@@ -14,11 +18,18 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 
+import com.example.priya.socialmediaapp.ChatApplication.Adapters.MyContactAdapter;
 import com.example.priya.socialmediaapp.ChatApplication.Chat_model.Contact;
 import com.example.priya.socialmediaapp.R;
 import android.widget.Button;
+import android.widget.ImageView;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -35,6 +46,7 @@ public class AddContactDialog extends Dialog implements View.OnClickListener {
     private Button cancelButton;
 
     List<Contact> listOfContacts;
+    List<String> phone_number_list;
 
     public AddContactDialog(Context context) {
         super(context);
@@ -45,6 +57,7 @@ public class AddContactDialog extends Dialog implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         listOfContacts = new ArrayList<>();
+        phone_number_list = new ArrayList<>();
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.add_contacts_dialog);
@@ -59,6 +72,8 @@ public class AddContactDialog extends Dialog implements View.OnClickListener {
        addContactButton = findViewById(R.id.addContactsButton_Dialog);
        cancelButton = findViewById(R.id.cancelContactsButton_Dialog);
         getContactList();
+
+
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,8 +81,55 @@ public class AddContactDialog extends Dialog implements View.OnClickListener {
             }
         });
 
-        //set self made adapter here...
+        adapter = new MyContactAdapter(context,listOfContacts);
         recyclerView.setAdapter(adapter);
+    }
+
+
+    public static Bitmap retrieveContactPhoto(Context context, String number) {
+        ContentResolver contentResolver = context.getContentResolver();
+
+        String contactId = null;
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
+
+        String[] projection = new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID};
+
+        Cursor cursor =
+                contentResolver.query(
+                        uri,
+                        projection,
+                        null,
+                        null,
+                        null);
+     //   Cursor cursor = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                contactId = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
+            }
+            cursor.close();
+        }
+
+        Bitmap photo = BitmapFactory.decodeResource(context.getResources(),
+                R.drawable.white_circle);
+
+        try {
+            InputStream inputStream = ContactsContract.Contacts.openContactPhotoInputStream(context.getContentResolver(),
+                    ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, new Long(contactId)));
+
+            if (inputStream != null) {
+                photo = BitmapFactory.decodeStream(inputStream);
+            }
+
+            assert inputStream != null;
+            if(inputStream != null) {
+                inputStream.close();
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return photo;
     }
 
     private void getContactList() {
@@ -100,8 +162,22 @@ public class AddContactDialog extends Dialog implements View.OnClickListener {
                         Contact newContact = new Contact();
                         newContact.setName(name);
                         newContact.setPhone_number(phoneNo);
-                        listOfContacts.add(counter, newContact);
-                        counter++;
+
+                       Bitmap d =  retrieveContactPhoto(context, newContact.getPhone_number());
+
+                        newContact.setProfileImage(d);
+                        String test_number = getSimplifiedNumber(newContact.getPhone_number());
+                        if(!phone_number_list.contains(test_number)) {
+                            phone_number_list.add(test_number);
+                            listOfContacts.add(counter, newContact);
+                            counter++;
+                            phone_number_list.add(test_number);
+                        } else {
+                            Log.d("CONTACT","ALREADY IN LIST... " + test_number);
+                        }
+
+
+
                     }
                     pCur.close();
                 }
@@ -110,6 +186,16 @@ public class AddContactDialog extends Dialog implements View.OnClickListener {
         if(cur!=null){
             cur.close();
         }
+    }
+
+    public String getSimplifiedNumber(String phone_number) {
+        phone_number = phone_number.replace("+", "");
+        phone_number = phone_number.replace("(", "");
+        phone_number = phone_number.replace(")", "");
+        phone_number = phone_number.replace("-", "");
+        phone_number = phone_number.replace(" ", "");
+        Log.d("CONTACT", phone_number);
+        return phone_number;
     }
 
     @Override

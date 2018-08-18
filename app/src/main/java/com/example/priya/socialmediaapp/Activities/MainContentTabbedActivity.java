@@ -1,5 +1,6 @@
 package com.example.priya.socialmediaapp.Activities;
 
+import android.Manifest;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -14,9 +15,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 
 import com.example.priya.socialmediaapp.Activities.Camera.MainCameraActivity;
+import com.example.priya.socialmediaapp.Activities.Camera.RunTimePermission;
 import com.example.priya.socialmediaapp.ChatApplication.ChatActivity;
 import com.example.priya.socialmediaapp.Model.tab_calls;
 import com.example.priya.socialmediaapp.Model.tab_contacts;
@@ -27,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainContentTabbedActivity extends AppCompatActivity {
 
+    private RunTimePermission runTimePermission;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -53,7 +57,26 @@ public class MainContentTabbedActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         mAuth = FirebaseAuth.getInstance();
+        runTimePermission = new RunTimePermission(this);
+        runTimePermission.requestPermission(new String[]{Manifest.permission.CAMERA,
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.WRITE_CONTACTS,
+                Manifest.permission.CALL_PHONE
+        }, new RunTimePermission.RunTimePermissionListener() {
 
+            @Override
+            public void permissionGranted() {
+                Toast.makeText(MainContentTabbedActivity.this, "Permission is granted...", Toast.LENGTH_LONG);
+            }
+
+            @Override
+            public void permissionDenied() {
+
+            }
+        });
 
 
 

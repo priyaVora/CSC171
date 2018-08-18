@@ -7,4 +7,5 @@
     <color name="greyColor">#dddada</color>
     <color name="colorAccent1">#0DA536</color>
     <color name="control_background">#cc4285f4</color>
+    <color name="grey_color">#cc9d9fa1</color>
 </resources>

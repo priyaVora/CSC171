@@ -1,24 +1,44 @@
 package com.example.priya.socialmediaapp.ChatApplication.Chat_model;
 
+import android.graphics.Bitmap;
 import android.media.Image;
+import android.widget.ImageView;
 
 /**
  * Created by Priya on 8/15/2018.
  */
 
 public class Contact {
+    private String contact_id;
     private String name;
     private String phone_number;
-    private String profileImageUri;
+    private Bitmap profileImage;
 
     public Contact() {
 
     }
 
-    public Contact(String name, String phonenumber, String profileImage) {
+    public Contact(String name, String phonenumber, Bitmap profileImage) {
         this.name = name;
         this.phone_number = phonenumber;
-        this.profileImageUri = profileImage;
+        this.profileImage = profileImage;
+    }
+
+
+    public Bitmap getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(Bitmap profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public String getContact_id() {
+        return contact_id;
+    }
+
+    public void setContact_id(String contact_id) {
+        this.contact_id = contact_id;
     }
 
     public String getName() {
@@ -37,11 +57,5 @@ public class Contact {
         this.phone_number = phone_number;
     }
 
-    public String getProfileImageUri() {
-        return profileImageUri;
-    }
 
-    public void setProfileImageUri(String profileImageUri) {
-        this.profileImageUri = profileImageUri;
-    }
 }
