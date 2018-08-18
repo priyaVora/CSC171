@@ -1,61 +1,54 @@
 package com.example.priya.socialmediaapp.ChatApplication.Adapters;
 
 import android.Manifest;
-import android.app.LauncherActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.hardware.Camera;
 import android.net.Uri;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Button;
 import android.widget.Toast;
-
 
 import com.example.priya.socialmediaapp.Activities.Camera.RunTimePermission;
 import com.example.priya.socialmediaapp.ChatApplication.Chat_model.Contact;
 import com.example.priya.socialmediaapp.R;
 
-import java.io.File;
 import java.util.List;
 
 /**
- * Created by Priya on 8/15/2018.
+ * Created by Priya on 8/18/2018.
  */
-
-public class MyContactAdapter extends RecyclerView.Adapter<MyContactAdapter.ViewHolder> {
+public class MyContactAdapter_Smaller_Version extends RecyclerView.Adapter<MyContactAdapter_Smaller_Version.ViewHolder> {
     private Context context;
     private List<Contact> contacts;
 
     private RunTimePermission runTimePermission;
-    public MyContactAdapter(Context context, List<Contact> contacts) {
+
+    public MyContactAdapter_Smaller_Version(Context context, List<Contact> contacts) {
         this.context = context;
         this.contacts = contacts;
     }
 
     @Override
-    public MyContactAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.contact_row, parent, false);
+    public MyContactAdapter_Smaller_Version.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.contact_row_smaller_version, parent, false);
         return new ViewHolder(view, context);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyContactAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Contact contact = contacts.get(position);
         holder.contact_name.setText(contact.getName());
         holder.contact_phone_number.setText(contact.getPhone_number());
         holder.contact_profile_button.setImageBitmap(contact.getProfileImage());
-
     }
 
     @Override
@@ -64,13 +57,13 @@ public class MyContactAdapter extends RecyclerView.Adapter<MyContactAdapter.View
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageButton contact_profile_button;
         private EditText contact_phone_number;
         private EditText contact_name;
         private Button call_button;
-        private Button video_call_button;
+
 
 
 
@@ -80,15 +73,10 @@ public class MyContactAdapter extends RecyclerView.Adapter<MyContactAdapter.View
             contact_name = itemView.findViewById(R.id.contact_name_view);
             contact_phone_number = itemView.findViewById(R.id.contact_phone_number_view);
             contact_profile_button = itemView.findViewById(R.id.contact_profile_image_button);
-
+            call_button = itemView.findViewById(R.id.callButton);
             contact_name.setInputType(InputType.TYPE_NULL);
             contact_phone_number.setInputType(InputType.TYPE_NULL);
-
-            call_button = itemView.findViewById(R.id.callButton);
-            video_call_button = itemView.findViewById(R.id.video_call_Button);
-
-
-            call_button.setOnClickListener(new OnClickListener() {
+            call_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, "Call Button was clicked!", Toast.LENGTH_SHORT).show();
@@ -106,12 +94,6 @@ public class MyContactAdapter extends RecyclerView.Adapter<MyContactAdapter.View
                         context.startActivity(intent);
                     }
 
-                    video_call_button.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Toast.makeText(v.getContext(), "Video Calling...", Toast.LENGTH_LONG).show();
-                        }
-                    });
 
                 }
             });

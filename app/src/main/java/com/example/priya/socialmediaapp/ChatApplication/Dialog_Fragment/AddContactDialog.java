@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.Window;
 
 import com.example.priya.socialmediaapp.ChatApplication.Adapters.MyContactAdapter;
+import com.example.priya.socialmediaapp.ChatApplication.Adapters.MyContactAdapter_Smaller_Version;
+import com.example.priya.socialmediaapp.ChatApplication.Chat_model.Alphatical_Order;
 import com.example.priya.socialmediaapp.ChatApplication.Chat_model.Contact;
 import com.example.priya.socialmediaapp.R;
 import android.widget.Button;
@@ -71,8 +73,12 @@ public class AddContactDialog extends Dialog implements View.OnClickListener {
 
        addContactButton = findViewById(R.id.addContactsButton_Dialog);
        cancelButton = findViewById(R.id.cancelContactsButton_Dialog);
-        getContactList();
 
+       if(listOfContacts.isEmpty()) {
+           getContactList();
+       }
+        Alphatical_Order order_list = new Alphatical_Order();
+        listOfContacts = order_list.sort(listOfContacts);
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +87,7 @@ public class AddContactDialog extends Dialog implements View.OnClickListener {
             }
         });
 
-        adapter = new MyContactAdapter(context,listOfContacts);
+        adapter = new MyContactAdapter_Smaller_Version(context, listOfContacts);
         recyclerView.setAdapter(adapter);
     }
 
@@ -156,8 +162,7 @@ public class AddContactDialog extends Dialog implements View.OnClickListener {
                     while (pCur.moveToNext()) {
                         String phoneNo = pCur.getString(pCur.getColumnIndex(
                                 ContactsContract.CommonDataKinds.Phone.NUMBER));
-                        Log.i("CONTACT", "Name: " + name);
-                        Log.i("CONTACT", "Phone Number: " + phoneNo);
+
 
                         Contact newContact = new Contact();
                         newContact.setName(name);
@@ -173,7 +178,6 @@ public class AddContactDialog extends Dialog implements View.OnClickListener {
                             counter++;
                             phone_number_list.add(test_number);
                         } else {
-                            Log.d("CONTACT","ALREADY IN LIST... " + test_number);
                         }
 
 
@@ -194,7 +198,6 @@ public class AddContactDialog extends Dialog implements View.OnClickListener {
         phone_number = phone_number.replace(")", "");
         phone_number = phone_number.replace("-", "");
         phone_number = phone_number.replace(" ", "");
-        Log.d("CONTACT", phone_number);
         return phone_number;
     }
 
