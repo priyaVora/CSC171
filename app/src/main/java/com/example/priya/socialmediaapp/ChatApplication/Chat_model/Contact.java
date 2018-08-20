@@ -12,24 +12,24 @@ public class Contact {
     private String contact_id;
     private String name;
     private String phone_number;
-    private Bitmap profileImage;
+    private String profileImage;
 
     public Contact() {
 
     }
 
-    public Contact(String name, String phonenumber, Bitmap profileImage) {
+    public Contact(String name, String phonenumber, String profileImage) {
         this.name = name;
         this.phone_number = phonenumber;
         this.profileImage = profileImage;
     }
 
 
-    public Bitmap getProfileImage() {
+    public String getProfileImage() {
         return profileImage;
     }
 
-    public void setProfileImage(Bitmap profileImage) {
+    public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
 

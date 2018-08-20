@@ -11,6 +11,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +27,7 @@ import com.example.priya.socialmediaapp.R;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -170,7 +172,7 @@ public class AddContactDialog extends Dialog implements View.OnClickListener {
 
                        Bitmap d =  retrieveContactPhoto(context, newContact.getPhone_number());
 
-                        newContact.setProfileImage(d);
+                        newContact.setProfileImage(getImageUri(context, d).toString());
                         String test_number = getSimplifiedNumber(newContact.getPhone_number());
                         if(!phone_number_list.contains(test_number)) {
                             phone_number_list.add(test_number);
@@ -190,6 +192,12 @@ public class AddContactDialog extends Dialog implements View.OnClickListener {
         if(cur!=null){
             cur.close();
         }
+    }
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 
     public String getSimplifiedNumber(String phone_number) {

@@ -48,7 +48,8 @@ public class MyContactAdapter_Smaller_Version extends RecyclerView.Adapter<MyCon
         Contact contact = contacts.get(position);
         holder.contact_name.setText(contact.getName());
         holder.contact_phone_number.setText(contact.getPhone_number());
-        holder.contact_profile_button.setImageBitmap(contact.getProfileImage());
+        Uri myUri = Uri.parse(contact.getProfileImage());
+        holder.contact_profile_button.setImageURI(myUri);
     }
 
     @Override

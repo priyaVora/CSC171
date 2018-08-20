@@ -5,9 +5,11 @@ import android.app.LauncherActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +28,7 @@ import com.example.priya.socialmediaapp.Activities.Camera.RunTimePermission;
 import com.example.priya.socialmediaapp.ChatApplication.Chat_model.Contact;
 import com.example.priya.socialmediaapp.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.List;
 
@@ -54,9 +57,19 @@ public class MyContactAdapter extends RecyclerView.Adapter<MyContactAdapter.View
         Contact contact = contacts.get(position);
         holder.contact_name.setText(contact.getName());
         holder.contact_phone_number.setText(contact.getPhone_number());
-        holder.contact_profile_button.setImageBitmap(contact.getProfileImage());
+        Uri myUri = Uri.parse(contact.getProfileImage());
+        holder.contact_profile_button.setImageURI(myUri);
 
     }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+
 
     @Override
     public int getItemCount() {

@@ -135,7 +135,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
 
                                         //Send users to postlist
-                                        Intent intent = new Intent(CreateAccountActivity.this, MainContentTabbedActivity.class);
+                                        Intent intent = new Intent(CreateAccountActivity.this, LoginActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //we usually use finish()
 
                                         startActivity(intent);
