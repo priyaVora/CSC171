@@ -9,7 +9,7 @@ import android.widget.ImageView;
  */
 
 public class Contact {
-    private String contact_id;
+
     private String name;
     private String phone_number;
     private String profileImage;
@@ -31,14 +31,6 @@ public class Contact {
 
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
-    }
-
-    public String getContact_id() {
-        return contact_id;
-    }
-
-    public void setContact_id(String contact_id) {
-        this.contact_id = contact_id;
     }
 
     public String getName() {

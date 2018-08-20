@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -28,6 +29,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
@@ -62,6 +64,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+
 
 public class MainContentTabbedActivity extends AppCompatActivity {
 
@@ -167,25 +171,25 @@ public class MainContentTabbedActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 if(position == 2) {
                     if(originalMenu != null) {
-                            originalMenu.clear();
+                        originalMenu.clear();
                         getMenuInflater().inflate(R.menu.status_menu, originalMenu);
                     }
 
                 } else if(position == 3) {
                     if(originalMenu != null) {
-                            originalMenu.clear();
+                        originalMenu.clear();
 
                         getMenuInflater().inflate(R.menu.calls_menu, originalMenu);
                     }
                 } else if(position == 1) {
                     if(originalMenu != null) {
-                            originalMenu.clear();
+                        originalMenu.clear();
 
                         getMenuInflater().inflate(R.menu.main_menu, originalMenu);
                     }
                 } else {
                     if(originalMenu != null) {
-                            originalMenu.clear();
+                        originalMenu.clear();
                         getMenuInflater().inflate(R.menu.main_menu, originalMenu);
                     }
                 }
@@ -212,45 +216,28 @@ public class MainContentTabbedActivity extends AppCompatActivity {
                     mViewPager.setCurrentItem(3);
 
 
-                            String userid = mAuth.getCurrentUser().getUid();
+                    String userid = mAuth.getCurrentUser().getUid();
 
-                            final DatabaseReference currentUserDb = mDatabaseReferences.child(userid);
-                        //    currentUserDb.child("contact_images").setValue(resultUri.toString());
+                    final DatabaseReference currentUserDb = mDatabaseReferences.child(userid);
+                    //    currentUserDb.child("contact_images").setValue(resultUri.toString());
 
-                    if(tab4.getListofContacts().isEmpty()) {
-                        if(currentUserDb.getDatabase().getReference().equals(currentUserDb)) {
-                            mGrabbContactDialog.show();
-                            getContactList();
-                            Alphatical_Order order_list = new Alphatical_Order();
-                            listofContacts = order_list.sort(listofContacts);
-                            tab4.setListofContacts(listofContacts);
 
-                            for (int i = 0; i < listofContacts.size(); i++) {
-                                Uri mImageUri = Uri.parse(listofContacts.get(i).getProfileImage());
-                                StorageReference filepath = mFirebaseStorage.child("MContact_Profile").child(mImageUri.getLastPathSegment());
-                                final int count = i;
-                                filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                                        DatabaseReference newPost = mDatabaseReferences.push();
 
-                                        listofContacts.get(count).setProfileImage(downloadUrl.toString());
-
-                                    }
-                                });
-                                currentUserDb.child("contact_" + i).setValue(listofContacts.get(i));
-                            }
-                            mGrabbContactDialog.dismiss();
-
-                        } else {
                             grabb_stored_contacts();
+                            Alphatical_Order order = new Alphatical_Order();
+                            listofContacts = order.sort(listofContacts);
+                            tab4.setListofContacts(new ArrayList<Contact>());
+                            tab4.setListofContacts(listofContacts);
+                            for(int i = 0; i < listofContacts.size();i++) {
+                                Log.d("GRABBED_CONTACTS", listofContacts.get(i).getName()+"");
+                            }
+
                             Log.d("Logged count", listofContacts.size()+ "");
                             Log.d("Logged","Stored data was used...");
-                        }
-                    }
+
+
                 } else if(tab.getText().equals("")) {
-                   // mViewPager.setCurrentItem(0);
+                    // mViewPager.setCurrentItem(0);
                     startActivity(new Intent(MainContentTabbedActivity.this, MainCameraActivity.class));
                     finish();
                 }
@@ -268,32 +255,68 @@ public class MainContentTabbedActivity extends AppCompatActivity {
         });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        if(mViewPager.getCurrentItem() == 3) {
+            fab.setBackgroundResource(R.drawable.sync_icon);
+        }
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            startActivity(new Intent(MainContentTabbedActivity.this, ChatActivity.class));
-            finish();
+                if (mViewPager.getCurrentItem() != 3) {
+                    startActivity(new Intent(MainContentTabbedActivity.this, ChatActivity.class));
+                    finish();
+                } else {
+
+
+
+                    String userid = mAuth.getCurrentUser().getUid();
+                    mDatabaseReferences.child(userid).removeValue();
+                    final DatabaseReference currentUserDb = mDatabaseReferences.child(userid);
+                    sync_contacts(currentUserDb);
+                } 
             }
         });
+
+
     }
+
+    private void sync_contacts(DatabaseReference currentUserDb) {
+        mGrabbContactDialog.show();
+        listofContacts = new ArrayList<>();
+        getContactList();
+        Alphatical_Order order = new Alphatical_Order();
+        listofContacts = order.sort(listofContacts);
+        //tab4.setListofContacts(new ArrayList<Contact>());
+        grabb_stored_contacts_FOR_SYNC();
+        listofContacts = order.sort(listofContacts);
+        tab4.setListofContacts(new ArrayList<Contact>());
+        tab4.return_adapter().notifyDataSetChanged();
+       // tab4.setListofContacts(new ArrayList<Contact>());
+        //tab4.setListofContacts(listofContacts);
+
+        for (int i = 0; i < listofContacts.size(); i++) {
+            Uri mImageUri = Uri.parse(listofContacts.get(i).getProfileImage());
+            StorageReference filepath = mFirebaseStorage.child("MContact_Profile").child(mImageUri.getLastPathSegment());
+            final int count = i;
+            filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    DatabaseReference newPost = mDatabaseReferences.push();
+
+                    if(listofContacts.size() != 0) {
+                        listofContacts.get(count).setProfileImage(downloadUrl.toString());
+                    }
+                }
+            });
+            currentUserDb.child("contact_" + i).setValue(listofContacts.get(i));
+        }
+        Toast.makeText(MainContentTabbedActivity.this, "Synced Contacts", Toast.LENGTH_LONG).show();
+        mGrabbContactDialog.dismiss();
+
+
+    }
+
     long return_value = 0;
-    public long get_count_of_childrens() {
-
-        mDatabaseReferences.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                long count = dataSnapshot.getChildrenCount();
-                return_value = count;
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        //Log.d("Logged Value: ",return_value + "");
-        return return_value;
-    }
 
 
     public long grabb_stored_contacts() {
@@ -301,43 +324,53 @@ public class MainContentTabbedActivity extends AppCompatActivity {
 
             listofContacts = new ArrayList<>();
         }
-
+        tab4.setListofContacts(new ArrayList<Contact>());
+        Log.d("grabbed_contacts","" + tab4.getListofContacts().size());
+        tab4.return_adapter().notifyDataSetChanged();
         mDatabaseReferences.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 long count_for_contact = dataSnapshot.getChildrenCount();
+                Log.d("COUNT_FOR_SNAP", "" + count_for_contact);
+                Log.d("COUNT_FOR_SNAP",dataSnapshot.getChildren().toString());
+                Iterable<DataSnapshot> list = dataSnapshot.getChildren();
 
-                    for (int i = 0; i < count_for_contact; i++) {
-                        HashMap<String, Contact> current_contact = (HashMap<String, Contact>) dataSnapshot.child("contact_" + i).getValue();
+                for(DataSnapshot d : list) {
+                    Log.d("SN", d.getValue().toString());
+                }
+                for (int i = 0; i < count_for_contact; i++) {
+                    HashMap<String, Contact> current_contact = (HashMap<String, Contact>) dataSnapshot.child("contact_" + i).getValue();
 
-                        Log.d("Grabbed Contact", "Current Contact: " + current_contact.toString());
+                    Log.d("Grabbed Contact", "Current Contact: " + current_contact.toString());
 
-                        Contact new_contact = new Contact();
 
-                        for (Map.Entry e : current_contact.entrySet()) {
-                            Log.d("Key: ", e.getKey().toString());
-                            Log.d("Value: ", e.getValue().toString());
+                    Contact new_contact = new Contact();
 
-                            if (e.getKey().equals("name")) {
-                                new_contact.setName(e.getValue().toString());
-                            } else if (e.getKey().equals("phone_number")) {
-                                new_contact.setPhone_number(e.getValue().toString());
-                            } else if (e.getKey().equals("profileImage")) {
-                                new_contact.setProfileImage(e.getValue().toString());
-                            }
-                            Log.d("Contact String: ", new_contact.toString());
+                    for (Map.Entry e : current_contact.entrySet()) {
+                        Log.d("Key: ", e.getKey().toString());
+                        Log.d("Value: ", e.getValue().toString());
 
-                                if(!listofContacts.contains(new_contact)) {
-                                    listofContacts.add(new_contact);
-                                }
-                            Log.d("Logged Value--", "" + return_value);
-                            if(return_value > 0) {
-                                tab4.setListofContacts(listofContacts);
-                            }
-
-                            return_value = count_for_contact;
+                        if (e.getKey().equals("name")) {
+                            new_contact.setName(e.getValue().toString());
+                        } else if (e.getKey().equals("phone_number")) {
+                            new_contact.setPhone_number(e.getValue().toString());
+                        } else if (e.getKey().equals("profileImage")) {
+                            new_contact.setProfileImage(e.getValue().toString());
                         }
+                        Log.d("Contact String: ", new_contact.toString());
+
+                        if(!listofContacts.contains(new_contact)) {
+                            listofContacts.add(new_contact);
+                        }
+                        Log.d("Logged Value--", "" + return_value);
+
+                        return_value = count_for_contact;
                     }
+                    if(return_value > 0) {
+                        tab4.setListofContacts(listofContacts);
+                    }
+
+                }
             }
 
             @Override
@@ -362,7 +395,82 @@ public class MainContentTabbedActivity extends AppCompatActivity {
         });
         return return_value;
     }
+    public long grabb_stored_contacts_FOR_SYNC() {
+        if(listofContacts == null) {
 
+            listofContacts = new ArrayList<>();
+        }
+        tab4.setListofContacts(new ArrayList<Contact>());
+        Log.d("grabbed_contacts","" + tab4.getListofContacts().size());
+        tab4.return_adapter().notifyDataSetChanged();
+        mDatabaseReferences.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                long count_for_contact = dataSnapshot.getChildrenCount();
+                Log.d("COUNT_FOR_SNAP", "" + count_for_contact);
+                Log.d("COUNT_FOR_SNAP",dataSnapshot.getChildren().toString());
+                Iterable<DataSnapshot> list = dataSnapshot.getChildren();
+
+                for(DataSnapshot d : list) {
+                    Log.d("SN", d.getValue().toString());
+                }
+                for (int i = 0; i < count_for_contact; i++) {
+                    HashMap<String, Contact> current_contact = (HashMap<String, Contact>) dataSnapshot.child("contact_" + i).getValue();
+
+                    Log.d("Grabbed Contact", "Current Contact: " + current_contact.toString());
+
+
+                    Contact new_contact = new Contact();
+
+                    for (Map.Entry e : current_contact.entrySet()) {
+                        Log.d("Key: ", e.getKey().toString());
+                        Log.d("Value: ", e.getValue().toString());
+
+                        if (e.getKey().equals("name")) {
+                            new_contact.setName(e.getValue().toString());
+                        } else if (e.getKey().equals("phone_number")) {
+                            new_contact.setPhone_number(e.getValue().toString());
+                        } else if (e.getKey().equals("profileImage")) {
+                            new_contact.setProfileImage(e.getValue().toString());
+                        }
+                        Log.d("Contact String: ", new_contact.toString());
+
+                        if(!listofContacts.contains(new_contact)) {
+                            listofContacts.add(new_contact);
+                        }
+                        Log.d("Logged Value--", "" + return_value);
+
+                        return_value = count_for_contact;
+                    }
+                    if(return_value > 0) {
+                        tab4.setListofContacts(listofContacts);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return return_value;
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("AuthMessage","Activity Result Called...");
@@ -400,11 +508,11 @@ public class MainContentTabbedActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-                if(item.getItemId() == R.id.action_signout) {
-                mAuth.signOut();
-                startActivity(new Intent(MainContentTabbedActivity.this, LoginActivity.class));
-                finish();
-                }
+        if(item.getItemId() == R.id.action_signout) {
+            mAuth.signOut();
+            startActivity(new Intent(MainContentTabbedActivity.this, LoginActivity.class));
+            finish();
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -495,7 +603,9 @@ public class MainContentTabbedActivity extends AppCompatActivity {
                         String test_number = getSimplifiedNumber(newContact.getPhone_number());
                         if(!phone_number_list.contains(test_number)) {
                             phone_number_list.add(test_number);
-                            listofContacts.add(counter, newContact);
+                            if(!listofContacts.contains(newContact)) {
+                                listofContacts.add(counter, newContact);
+                            }
                             counter++;
                             phone_number_list.add(test_number);
                         } else {

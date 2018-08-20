@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.priya.socialmediaapp.Activities.Camera.RunTimePermission;
 import com.example.priya.socialmediaapp.ChatApplication.Chat_model.Contact;
 import com.example.priya.socialmediaapp.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -46,10 +47,15 @@ public class MyContactAdapter_Smaller_Version extends RecyclerView.Adapter<MyCon
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Contact contact = contacts.get(position);
+        String imageUrl = null;
         holder.contact_name.setText(contact.getName());
         holder.contact_phone_number.setText(contact.getPhone_number());
-        Uri myUri = Uri.parse(contact.getProfileImage());
-        holder.contact_profile_button.setImageURI(myUri);
+        imageUrl = contact.getProfileImage();
+
+        //TODO: Use Picasso library to load image
+        Picasso.with(context)
+                .load(imageUrl)
+                .into(holder.contact_profile_button);
     }
 
     @Override

@@ -26,6 +26,7 @@ import com.example.priya.socialmediaapp.R;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -70,15 +71,30 @@ public class tab_calls extends Fragment {
     }
 
     public void setListofContacts(List<Contact> listofContacts) {
+        this.listofContacts = new ArrayList<>();
         this.listofContacts = listofContacts;
+
+        Log.d("REPEATED", "//////////////////////////////////////////////////////////////////////////");
+        Log.d("grabbed_contacts_set","" + listofContacts.size());
+        Log.d("grabbed_contacts_global","" + this.listofContacts.size() + "");
+
+        for(int i = 0; i < listofContacts.size(); i++) {
+            Log.d("REPEATED CONTACTS","" + listofContacts.get(i).getName());
+        }
+
 
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager layoutManger = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManger);
         adapter = new MyContactAdapter(context,listofContacts);
+        adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
 
+    }
+
+    public RecyclerView.Adapter return_adapter() {
+        return adapter;
     }
 
     public ContentResolver getContentResolver() {

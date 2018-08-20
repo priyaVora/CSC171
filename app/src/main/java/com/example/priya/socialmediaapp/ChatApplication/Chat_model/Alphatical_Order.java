@@ -2,6 +2,7 @@ package com.example.priya.socialmediaapp.ChatApplication.Chat_model;
 
 import android.util.Log;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -27,7 +28,10 @@ public class Alphatical_Order {
 
         for (int i = 0; i < listOfContacts.size() ; i++) {
             Log.d("ORDERED",listOfContacts.get(i).getName());
+            Log.d("ORDERED FREQUENCY",Collections.frequency(listOfContacts, listOfContacts.get(i)) + "");
         }
+
+
         return listOfContacts;
     }
 }
