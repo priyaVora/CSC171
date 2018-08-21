@@ -223,17 +223,11 @@ public class MainContentTabbedActivity extends AppCompatActivity {
 
 
 
-                            grabb_stored_contacts();
-                            Alphatical_Order order = new Alphatical_Order();
-                            listofContacts = order.sort(listofContacts);
-                            tab4.setListofContacts(new ArrayList<Contact>());
-                            tab4.setListofContacts(listofContacts);
-                            for(int i = 0; i < listofContacts.size();i++) {
-                                Log.d("GRABBED_CONTACTS", listofContacts.get(i).getName()+"");
-                            }
-
-                            Log.d("Logged count", listofContacts.size()+ "");
-                            Log.d("Logged","Stored data was used...");
+                    tab4.setListofContacts(new ArrayList<Contact>());
+                    tab4.return_adapter().notifyDataSetChanged();
+                    listofContacts = new ArrayList<>();
+                    phone_number_list = new ArrayList<>();
+                    grabb_stored_contacts();
 
 
                 } else if(tab.getText().equals("")) {
@@ -255,9 +249,7 @@ public class MainContentTabbedActivity extends AppCompatActivity {
         });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        if(mViewPager.getCurrentItem() == 3) {
-            fab.setBackgroundResource(R.drawable.sync_icon);
-        }
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -272,6 +264,10 @@ public class MainContentTabbedActivity extends AppCompatActivity {
                     mDatabaseReferences.child(userid).removeValue();
                     final DatabaseReference currentUserDb = mDatabaseReferences.child(userid);
                     sync_contacts(currentUserDb);
+                    tab4.setListofContacts(new ArrayList<Contact>());
+                    tab4.return_adapter().notifyDataSetChanged();
+                    listofContacts = new ArrayList<>();
+                   // grabb_stored_contacts();
                 } 
             }
         });
