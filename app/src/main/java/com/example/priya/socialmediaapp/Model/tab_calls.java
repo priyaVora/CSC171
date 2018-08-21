@@ -72,17 +72,31 @@ public class tab_calls extends Fragment {
 
     public void setListofContacts(List<Contact> listofContacts) {
         this.listofContacts = new ArrayList<>();
+
         this.listofContacts = listofContacts;
 
         Log.d("REPEATED", "//////////////////////////////////////////////////////////////////////////");
         Log.d("grabbed_contacts_set","" + listofContacts.size());
         Log.d("grabbed_contacts_global","" + this.listofContacts.size() + "");
 
+        List<Contact> new_list = new ArrayList<>();
+        List<String> phone_number = new ArrayList<>();
+
+        int phone_counter = 0;
         for(int i = 0; i < listofContacts.size(); i++) {
-            Log.d("REPEATED CONTACTS","" + listofContacts.get(i).getName());
+            if (!new_list.contains(listofContacts.get(i)) && !(phone_number.contains(listofContacts.get(i).getPhone_number()))) {
+                new_list.add(i, listofContacts.get(i));
+                phone_number.add(phone_counter, listofContacts.get(i).getPhone_number());
+                phone_counter++;
+            }
         }
 
-
+        this.listofContacts = new_list;
+        if(listofContacts.size() == 1) {
+            listofContacts = new ArrayList<>();
+        }
+        Alphatical_Order order = new Alphatical_Order();
+        listofContacts = order.sort(new_list);
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager layoutManger = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false);
@@ -91,6 +105,14 @@ public class tab_calls extends Fragment {
         adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
 
+    }
+
+    public RecyclerView getRecyclerView() {
+        return recyclerView;
+    }
+
+    public void setRecyclerView(RecyclerView recyclerView) {
+        this.recyclerView = recyclerView;
     }
 
     public RecyclerView.Adapter return_adapter() {

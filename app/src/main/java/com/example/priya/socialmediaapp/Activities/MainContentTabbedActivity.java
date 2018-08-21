@@ -227,6 +227,7 @@ public class MainContentTabbedActivity extends AppCompatActivity {
                     tab4.return_adapter().notifyDataSetChanged();
                     listofContacts = new ArrayList<>();
                     phone_number_list = new ArrayList<>();
+
                     grabb_stored_contacts();
 
 
@@ -267,7 +268,7 @@ public class MainContentTabbedActivity extends AppCompatActivity {
                     tab4.setListofContacts(new ArrayList<Contact>());
                     tab4.return_adapter().notifyDataSetChanged();
                     listofContacts = new ArrayList<>();
-                   // grabb_stored_contacts();
+                    tab4.getRecyclerView().setAdapter(null);
                 } 
             }
         });
@@ -281,34 +282,34 @@ public class MainContentTabbedActivity extends AppCompatActivity {
         getContactList();
         Alphatical_Order order = new Alphatical_Order();
         listofContacts = order.sort(listofContacts);
-        //tab4.setListofContacts(new ArrayList<Contact>());
-        grabb_stored_contacts_FOR_SYNC();
-        listofContacts = order.sort(listofContacts);
         tab4.setListofContacts(new ArrayList<Contact>());
         tab4.return_adapter().notifyDataSetChanged();
-       // tab4.setListofContacts(new ArrayList<Contact>());
-        //tab4.setListofContacts(listofContacts);
 
-        for (int i = 0; i < listofContacts.size(); i++) {
-            Uri mImageUri = Uri.parse(listofContacts.get(i).getProfileImage());
-            StorageReference filepath = mFirebaseStorage.child("MContact_Profile").child(mImageUri.getLastPathSegment());
-            final int count = i;
-            filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                    DatabaseReference newPost = mDatabaseReferences.push();
+        if(listofContacts.size() > 1) {
+            for (int i = 0; i < listofContacts.size(); i++) {
+                Uri mImageUri = Uri.parse(listofContacts.get(i).getProfileImage());
+                StorageReference filepath = mFirebaseStorage.child("MContact_Profile").child(mImageUri.getLastPathSegment());
+                final int count = i;
+                filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        DatabaseReference newPost = mDatabaseReferences.push();
 
-                    if(listofContacts.size() != 0) {
-                        listofContacts.get(count).setProfileImage(downloadUrl.toString());
+                        if (listofContacts.size() != 0) {
+                            if (listofContacts.size() != count) {
+                                if (count < listofContacts.size()) {
+                                    listofContacts.get(count).setProfileImage(downloadUrl.toString());
+                                }
+                            }
+                        }
                     }
-                }
-            });
-            currentUserDb.child("contact_" + i).setValue(listofContacts.get(i));
+                });
+                currentUserDb.child("contact_" + i).setValue(listofContacts.get(i));
+            }
+            Toast.makeText(MainContentTabbedActivity.this, "Synced Contacts", Toast.LENGTH_LONG).show();
+            mGrabbContactDialog.dismiss();
         }
-        Toast.makeText(MainContentTabbedActivity.this, "Synced Contacts", Toast.LENGTH_LONG).show();
-        mGrabbContactDialog.dismiss();
-
 
     }
 
