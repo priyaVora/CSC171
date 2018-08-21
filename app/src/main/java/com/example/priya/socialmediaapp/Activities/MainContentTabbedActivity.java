@@ -268,12 +268,29 @@ public class MainContentTabbedActivity extends AppCompatActivity {
                     tab4.setListofContacts(new ArrayList<Contact>());
                     tab4.return_adapter().notifyDataSetChanged();
                     listofContacts = new ArrayList<>();
-                    tab4.getRecyclerView().setAdapter(null);
+
                 } 
             }
         });
 
 
+    }
+
+
+    public void clearView() {
+
+        String userid = mAuth.getCurrentUser().getUid();
+
+        final DatabaseReference currentUserDb = mDatabaseReferences.child(userid);
+        //    currentUserDb.child("contact_images").setValue(resultUri.toString());
+
+
+        tab4.setListofContacts(new ArrayList<Contact>());
+        tab4.return_adapter().notifyDataSetChanged();
+        listofContacts = new ArrayList<>();
+        phone_number_list = new ArrayList<>();
+
+//        grabb_stored_contacts();
     }
 
     private void sync_contacts(DatabaseReference currentUserDb) {
@@ -310,7 +327,7 @@ public class MainContentTabbedActivity extends AppCompatActivity {
             Toast.makeText(MainContentTabbedActivity.this, "Synced Contacts", Toast.LENGTH_LONG).show();
             mGrabbContactDialog.dismiss();
         }
-
+        clearView();
     }
 
     long return_value = 0;
@@ -392,82 +409,7 @@ public class MainContentTabbedActivity extends AppCompatActivity {
         });
         return return_value;
     }
-    public long grabb_stored_contacts_FOR_SYNC() {
-        if(listofContacts == null) {
 
-            listofContacts = new ArrayList<>();
-        }
-        tab4.setListofContacts(new ArrayList<Contact>());
-        Log.d("grabbed_contacts","" + tab4.getListofContacts().size());
-        tab4.return_adapter().notifyDataSetChanged();
-        mDatabaseReferences.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                long count_for_contact = dataSnapshot.getChildrenCount();
-                Log.d("COUNT_FOR_SNAP", "" + count_for_contact);
-                Log.d("COUNT_FOR_SNAP",dataSnapshot.getChildren().toString());
-                Iterable<DataSnapshot> list = dataSnapshot.getChildren();
-
-                for(DataSnapshot d : list) {
-                    Log.d("SN", d.getValue().toString());
-                }
-                for (int i = 0; i < count_for_contact; i++) {
-                    HashMap<String, Contact> current_contact = (HashMap<String, Contact>) dataSnapshot.child("contact_" + i).getValue();
-
-                    Log.d("Grabbed Contact", "Current Contact: " + current_contact.toString());
-
-
-                    Contact new_contact = new Contact();
-
-                    for (Map.Entry e : current_contact.entrySet()) {
-                        Log.d("Key: ", e.getKey().toString());
-                        Log.d("Value: ", e.getValue().toString());
-
-                        if (e.getKey().equals("name")) {
-                            new_contact.setName(e.getValue().toString());
-                        } else if (e.getKey().equals("phone_number")) {
-                            new_contact.setPhone_number(e.getValue().toString());
-                        } else if (e.getKey().equals("profileImage")) {
-                            new_contact.setProfileImage(e.getValue().toString());
-                        }
-                        Log.d("Contact String: ", new_contact.toString());
-
-                        if(!listofContacts.contains(new_contact)) {
-                            listofContacts.add(new_contact);
-                        }
-                        Log.d("Logged Value--", "" + return_value);
-
-                        return_value = count_for_contact;
-                    }
-                    if(return_value > 0) {
-                        tab4.setListofContacts(listofContacts);
-                    }
-
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        return return_value;
-    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("AuthMessage","Activity Result Called...");
