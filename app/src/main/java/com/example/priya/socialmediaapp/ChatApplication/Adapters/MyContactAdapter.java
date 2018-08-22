@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,6 +32,9 @@ import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -40,11 +44,28 @@ import java.util.List;
 public class MyContactAdapter extends RecyclerView.Adapter<MyContactAdapter.ViewHolder> {
     private Context context;
     private List<Contact> contacts;
+    List<String> phoneList;
 
     private RunTimePermission runTimePermission;
     public MyContactAdapter(Context context, List<Contact> contacts) {
         this.context = context;
         this.contacts = contacts;
+        phoneList = new ArrayList<>();
+
+        List<Contact> updateList = new ArrayList<>();
+        int phone_number_counter = 0;
+        int update_list_counter = 0;
+        for(int i = 0; i <this.contacts.size(); i++) {
+            Log.d("error_adapter_list","" + contacts.get(i).getName());
+            if(!phoneList.contains(contacts.get(i).getPhone_number())) {
+                phoneList.add(phone_number_counter, contacts.get(i).getPhone_number());
+                phone_number_counter++;
+                updateList.add(update_list_counter, contacts.get(i));
+                update_list_counter++;
+            }
+        }
+
+        this.contacts = updateList;
     }
 
     public void notify_change() {

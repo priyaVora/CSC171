@@ -276,21 +276,25 @@ public class MainContentTabbedActivity extends AppCompatActivity {
 
     }
 
-
     public void clearView() {
 
         String userid = mAuth.getCurrentUser().getUid();
 
         final DatabaseReference currentUserDb = mDatabaseReferences.child(userid);
-        //    currentUserDb.child("contact_images").setValue(resultUri.toString());
+        Log.d("error_check_global_list", "" +listofContacts.size());
+        Log.d("error_check_phone_list", ""+ phone_number_list.size());
+        Log.d("error_check_tab4", "" +tab4.getListofContacts().size());
 
+        for(int i = 0; i < phone_number_list.size(); i++) {
+            Log.d("error_phone_check ", "" + phone_number_list.get(i));
+        }
 
-        tab4.setListofContacts(new ArrayList<Contact>());
-        tab4.return_adapter().notifyDataSetChanged();
-        listofContacts = new ArrayList<>();
-        phone_number_list = new ArrayList<>();
+        grabb_stored_contacts();
+        Log.d("error", "after grabb contacts");
+        Log.d("error_check_global_list", "" +listofContacts.size());
+        Log.d("error_check_phone_list", ""+ phone_number_list.size());
+        Log.d("error_check_tab4", "" +tab4.getListofContacts().size());
 
-//        grabb_stored_contacts();
     }
 
     private void sync_contacts(DatabaseReference currentUserDb) {
@@ -337,6 +341,7 @@ public class MainContentTabbedActivity extends AppCompatActivity {
         if(listofContacts == null) {
 
             listofContacts = new ArrayList<>();
+
         }
         tab4.setListofContacts(new ArrayList<Contact>());
         Log.d("grabbed_contacts","" + tab4.getListofContacts().size());
@@ -380,10 +385,11 @@ public class MainContentTabbedActivity extends AppCompatActivity {
 
                         return_value = count_for_contact;
                     }
-                    if(return_value > 0) {
-                        tab4.setListofContacts(listofContacts);
-                    }
 
+
+                }
+                if(return_value > 0) {
+                    tab4.setListofContacts(listofContacts);
                 }
             }
 
@@ -507,6 +513,7 @@ public class MainContentTabbedActivity extends AppCompatActivity {
         ContentResolver cr = getContentResolver();
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
                 null, null, null, null);
+        phone_number_list = new ArrayList<>();
 
         if ((cur != null ? cur.getCount() : 0) > 0) {
             int counter = 0;
@@ -546,14 +553,9 @@ public class MainContentTabbedActivity extends AppCompatActivity {
                                 listofContacts.add(counter, newContact);
                             }
                             counter++;
-                            phone_number_list.add(test_number);
                         } else {
                             Log.d("CONTACT from call","ALREADY IN LIST... " + test_number);
                         }
-
-
-
-
                     }
                     pCur.close();
                 }
