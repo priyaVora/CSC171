@@ -10,6 +10,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
@@ -202,7 +204,26 @@ public class MainContentTabbedActivity extends AppCompatActivity {
 
             }
         });
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mViewPager.getCurrentItem() != 3) {
+                    startActivity(new Intent(MainContentTabbedActivity.this, ChatActivity.class));
+                    finish();
+                } else {
+                    String userid = mAuth.getCurrentUser().getUid();
+                    mDatabaseReferences.child(userid).removeValue();
+                    final DatabaseReference currentUserDb = mDatabaseReferences.child(userid);
+                    sync_contacts(currentUserDb);
+                    tab4.setListofContacts(new ArrayList<Contact>());
+                    tab4.return_adapter().notifyDataSetChanged();
+                    listofContacts = new ArrayList<>();
+
+                }
+            }
+        });
         mViewPager.setCurrentItem(1);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -214,22 +235,15 @@ public class MainContentTabbedActivity extends AppCompatActivity {
                     mViewPager.setCurrentItem(2);
                 } else if(tab.getText().equals("CALLS")) {
                     mViewPager.setCurrentItem(3);
-
-
+                    change_button_icon(fab);
                     String userid = mAuth.getCurrentUser().getUid();
-
                     final DatabaseReference currentUserDb = mDatabaseReferences.child(userid);
-                    //    currentUserDb.child("contact_images").setValue(resultUri.toString());
-
-
-
                     tab4.setListofContacts(new ArrayList<Contact>());
                     tab4.return_adapter().notifyDataSetChanged();
                     listofContacts = new ArrayList<>();
                     phone_number_list = new ArrayList<>();
 
                     grabb_stored_contacts();
-
 
                 } else if(tab.getText().equals("")) {
                     // mViewPager.setCurrentItem(0);
@@ -249,30 +263,13 @@ public class MainContentTabbedActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mViewPager.getCurrentItem() != 3) {
-                    startActivity(new Intent(MainContentTabbedActivity.this, ChatActivity.class));
-                    finish();
-                } else {
 
 
 
-                    String userid = mAuth.getCurrentUser().getUid();
-                    mDatabaseReferences.child(userid).removeValue();
-                    final DatabaseReference currentUserDb = mDatabaseReferences.child(userid);
-                    sync_contacts(currentUserDb);
-                    tab4.setListofContacts(new ArrayList<Contact>());
-                    tab4.return_adapter().notifyDataSetChanged();
-                    listofContacts = new ArrayList<>();
+    }
 
-                } 
-            }
-        });
-
+    public void change_button_icon(FloatingActionButton fab) {
+        fab.setBackgroundResource(R.drawable.add_calling_icon);
 
     }
 
