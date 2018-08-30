@@ -1,10 +1,12 @@
 package com.example.priya.socialmediaapp.Activities.Camera;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.VideoView;
 
@@ -12,10 +14,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.priya.socialmediaapp.Activities.MainContentTabbedActivity;
 import com.example.priya.socialmediaapp.R;
 
 public class PhotoVideoRedirectActivity extends AppCompatActivity {
 
+    private ImageButton go_back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +31,14 @@ public class PhotoVideoRedirectActivity extends AppCompatActivity {
     }
     VideoView videoView;
     private void init() {
-
+        go_back = findViewById(R.id.goBackToMain);
+        go_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(PhotoVideoRedirectActivity.this, MainContentTabbedActivity.class));
+                finish();
+            }
+        });
         ImageView imgShow = (ImageView) findViewById(R.id.imgShow);
         videoView = (VideoView) findViewById(R.id.vidShow);
 
