@@ -87,7 +87,7 @@
     <ImageButton
         android:id="@+id/profileImageLoginScreen"
         android:layout_width="318dp"
-        android:layout_height="206dp"
+        android:layout_height="164dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="56dp"
@@ -114,6 +114,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lastNameViewLogin" />
+
+    <EditText
+        android:id="@+id/video_call_channel_view"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/edit_text_bg"
+        android:ems="10"
+        android:hint="@string/video_call_channel_name"
+        android:inputType="text"
+        android:padding="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/createAccountButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordViewLogin" />
 
     <Button
         android:id="@+id/goBackButton"

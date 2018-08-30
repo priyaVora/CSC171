@@ -3,7 +3,7 @@
     <string name="file_limit_size_upload_format">Files must be less than %sMB</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="agora_app_id">"What's App"</string>
+    <string name="agora_app_id">"1408a8f4566940118e928f6d1343cf62"</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_main_content_tabbed">MainContentTabbedActivity</string>
@@ -12,7 +12,8 @@
     <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
-
+    <string name="video_call_channel_name">Video Call Channel</string>
+    <string name="tips">"1. Default channel name is demoChannel1\n2. Waiting for remote users\n3. This demo only supports 1v1 video calling"</string>
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
 

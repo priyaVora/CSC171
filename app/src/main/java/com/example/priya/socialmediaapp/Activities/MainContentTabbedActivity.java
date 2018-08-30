@@ -6,19 +6,14 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -31,15 +26,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 
 import com.example.priya.socialmediaapp.Activities.Camera.MainCameraActivity;
 import com.example.priya.socialmediaapp.Activities.Camera.RunTimePermission;
-import com.example.priya.socialmediaapp.ChatApplication.ChatActivity;
 import com.example.priya.socialmediaapp.ChatApplication.Chat_model.Alphatical_Order;
 import com.example.priya.socialmediaapp.ChatApplication.Chat_model.Contact;
+import com.example.priya.socialmediaapp.ChatApplication.Chat_model.User;
 import com.example.priya.socialmediaapp.Model.tab_calls;
 import com.example.priya.socialmediaapp.Model.tab_contacts;
 import com.example.priya.socialmediaapp.Model.tab_chat;
@@ -52,12 +46,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -76,8 +67,10 @@ public class MainContentTabbedActivity extends AppCompatActivity {
     private ProgressDialog mGrabbContactDialog;
 
     private DatabaseReference mDatabaseReferences;
+    private DatabaseReference userDatabaseReferences;
     private FirebaseDatabase mDatabase;
     private StorageReference mFirebaseStorage;
+    private String current_channel_for_user;
 
     private RunTimePermission runTimePermission;
     /**
@@ -119,8 +112,11 @@ public class MainContentTabbedActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseReferences = mDatabase.getReference().child("MContacts");
+        userDatabaseReferences = mDatabase.getReference().child("MUser");
         mFirebaseStorage = FirebaseStorage.getInstance().getReference().child("MContact_Profile_Pics");
         mAuth = FirebaseAuth.getInstance();
+
+
 
 
         runTimePermission = new RunTimePermission(MainContentTabbedActivity.this);
@@ -144,10 +140,43 @@ public class MainContentTabbedActivity extends AppCompatActivity {
             }
         });
 
+        userDatabaseReferences.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String userid = mAuth.getCurrentUser().getUid();
+                   User current_user = dataSnapshot.getValue(User.class);
+                   Log.d("result_current_user",""+ current_user.getFirstname());
+                Log.d("result_current_user",""+ userid);
+                Log.d("result_current_user",""+ dataSnapshot.getKey().equals(userid));
+                if(dataSnapshot.getKey().equals(userid)) {
+                    current_channel_for_user = current_user.getChannel();
+                }
 
+                Log.d("result_current_user",""+ current_channel_for_user);
+            }
 
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-        tabLayout = findViewById(R.id.tabs);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+            tabLayout = findViewById(R.id.tabs);
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.camera));
         tabLayout.getTabAt(0).setText("");
         tabLayout.addTab(tabLayout.newTab().setText("CHATS"));
@@ -210,7 +239,10 @@ public class MainContentTabbedActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mViewPager.getCurrentItem() != 3) {
-                    startActivity(new Intent(MainContentTabbedActivity.this, ChatActivity.class));
+                   /// startActivity(new Intent(MainContentTabbedActivity.this, ChatActivity.class));
+                    Intent video_call_intent = new Intent(MainContentTabbedActivity.this, VideoChatViewActivity.class);
+                    video_call_intent.putExtra("channel_id","" + current_channel_for_user);
+                    startActivity(video_call_intent);
                     finish();
                 } else {
                     String userid = mAuth.getCurrentUser().getUid();
@@ -262,10 +294,6 @@ public class MainContentTabbedActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
     }
 
     public void change_button_icon(FloatingActionButton fab) {
@@ -347,8 +375,7 @@ public class MainContentTabbedActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 long count_for_contact = dataSnapshot.getChildrenCount();
-                Log.d("COUNT_FOR_SNAP", "" + count_for_contact);
-                Log.d("COUNT_FOR_SNAP",dataSnapshot.getChildren().toString());
+
                 Iterable<DataSnapshot> list = dataSnapshot.getChildren();
 
                 for(DataSnapshot d : list) {
@@ -413,31 +440,7 @@ public class MainContentTabbedActivity extends AppCompatActivity {
         return return_value;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("AuthMessage","Activity Result Called...");
-        super.onActivityResult(requestCode, resultCode, data);
 
-//        if(requestCode == GALLERYCODE && resultCode == RESULT_OK) {
-//            Uri mImageUri = data.getData();
-//            CropImage.activity(mImageUri)
-//                    .setAspectRatio(1,1)
-//                    .setGuidelines(CropImageView.Guidelines.ON)
-//                    .start(MainContentTabbedActivity.this);
-//        }
-
-
-//        if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-//            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-//            if(resultCode == RESULT_OK) {
-//                resultUri = result.getUri();
-//                //profileImageButton.setImageURI(resultUri);
-//            } else if(resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-//                Exception error = result.getError();
-//            }
-//        }
-
-    }
 
 
     @Override
@@ -579,11 +582,6 @@ public class MainContentTabbedActivity extends AppCompatActivity {
         Log.d("CONTACT from call", phone_number);
         return phone_number;
     }
-
-
-
-
-
 
     //deleted PlaceHoldeFragment class from here.
 

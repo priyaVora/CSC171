@@ -30,6 +30,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     private EditText lastNameView;
     private EditText emailView;
     private EditText password;
+    private EditText channel_name;
     private Button createAccountButton;
     private Button goBackButton;
     private ImageButton profileImageButton;
@@ -54,6 +55,8 @@ public class CreateAccountActivity extends AppCompatActivity {
         emailView = findViewById(R.id.email);
         password = findViewById(R.id.passwordViewLogin);
         profileImageButton = findViewById(R.id.profileImageLoginScreen);
+        channel_name = findViewById(R.id.video_call_channel_view);
+
         createAccountButton = findViewById(R.id.createAccountButton);
         goBackButton = findViewById(R.id.goBackButton);
 
@@ -100,6 +103,7 @@ public class CreateAccountActivity extends AppCompatActivity {
             final String lName = lastNameView.getText().toString().trim();
             final String em = emailView.getText().toString().trim();
             final String pwd = password.getText().toString().trim();
+            final String chl = channel_name.getText().toString().trim();
 
             if(!TextUtils.isEmpty(fName) && !TextUtils.isEmpty(lName) &&
                     !TextUtils.isEmpty(em) && !TextUtils.isEmpty(pwd)) {
@@ -130,6 +134,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                                         Log.d("profileImageMessage", "First name is set.");
                                         currentUserDb.child("lastname").setValue(lName);
                                         Log.d("profileImageMessage", "Last name is set.");
+                                        currentUserDb.child("channel").setValue(chl);
                                         mCreateAccountDialog.dismiss();
 
 

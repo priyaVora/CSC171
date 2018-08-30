@@ -12,17 +12,19 @@ public class User {
     private String email;
     private String phone_number;
     private Image profileImage;
+    private String channel;
 
     public User() {
 
     }
 
-    public User(String firstname, String lastname, String email, String phone_number, Image profileImage) {
+    public User(String firstname, String lastname, String email, String phone_number, Image profileImage, String video_call_default_channel) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.phone_number = phone_number;
         this.profileImage = profileImage;
+        this.channel = video_call_default_channel;
     }
 
     public String getFirstname() {
@@ -63,5 +65,14 @@ public class User {
 
     public void setProfileImage(Image profileImage) {
         this.profileImage = profileImage;
+    }
+
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 }
